@@ -1,7 +1,7 @@
 import React from 'react';
 import { Router, Route, Switch } from 'react-router-dom';
 import history from './plugins/history';
-import Home from './container/home.tsx';
+import Home from './container/home';
 
 const App: React.FC = () => {
   return (
