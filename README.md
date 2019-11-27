@@ -1,5 +1,7 @@
 # household-account-book-app
+
 Household account book app for freee corporations
+
 - this repository is creat for freee corporation
 
 ## Available Scripts
