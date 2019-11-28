@@ -1,0 +1,11 @@
+type Product {
+  id: ID! @id
+  name: String!
+  price: Int!
+}
+
+type User {
+  id: ID! @id
+  name: String!
+  products: [Product]!
+}
