@@ -1,21 +1,21 @@
 import React from 'react';
 
 type Props = {
-  fetchData: () => void;
-  setInputText: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  sendInputValue: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+  products: Products[];
 };
 
-const Home: React.FC<Props> = ({ fetchData, setInputText, sendInputValue }) => {
+const Home: React.FC<Props> = ({ products }) => {
   return (
     <div>
-      <button onClick={fetchData}>fetchData</button>
-      <input
-        type="text"
-        placeholder="product name"
-        onChange={(event) => setInputText(event as React.ChangeEvent<HTMLInputElement>)}
-        onKeyPress={(event) => sendInputValue(event as React.KeyboardEvent<HTMLInputElement>)}
-      />
+      {products.map((product) => {
+        return (
+          <React.Fragment key={product.id}>
+            <p>{product.id}</p>
+            <p>{product.name}</p>
+            <p>{product.price}</p>
+          </React.Fragment>
+        );
+      })}
     </div>
   );
 };

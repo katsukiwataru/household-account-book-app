@@ -1,16 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import HomeComp from '../components/homeComp';
 
 const Home: React.FC = () => {
-  const [name, setName] = useState<string>('');
+  const [products, setProducts] = useState<Products[]>([]);
+  // const query = `mutation {
+  //   createProduct(data: {
+  //     name: "${name}",
+  //     price: 30000
+  //   }) {
+  //     id
+  //     name
+  //   }
+  // }`;
 
-  const query = `mutation {
-    createProduct(data: {
-      name: "${name}",
-      price: 30000
-    }) {
+  const query = `{
+    products{
       id
       name
+      price
     }
   }`;
 
@@ -28,25 +35,19 @@ const Home: React.FC = () => {
         mode: 'cors',
       });
       const jsonData = await data.json();
-      console.log(jsonData);
+      setProducts(jsonData.data.products);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const setInputText = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const postName = event.target as HTMLButtonElement;
-    setName(postName.value);
-  };
+  useEffect(() => {
+    fetchData();
+  }, []);
 
-  const sendInputValue = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      fetchData();
-    }
-  };
   return (
     <div>
-      <HomeComp fetchData={fetchData} sendInputValue={sendInputValue} setInputText={setInputText} />
+      <HomeComp products={products} />
     </div>
   );
 };
