@@ -1,16 +1,37 @@
 # household-account-book-app
 
-Household account book app for freee corporations
+## Overview
 
-- this repository is creat for freee corporation
+Repository for creating a web app that is the subject of Freee corporation
 
-## Available Scripts
+## Usage
 
-### `npm run dev`
+frontend setup
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```sh
+npm intall
+```
 
-### `npm build`
+```sh
+npm run dev
+```
 
-Builds the app for production to the `dist` folder.
+- Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+```sh
+npm build
+```
+
+- Builds the app for production to the `dist` folder.
+
+database setup
+
+```sh
+cd src/database/
+```
+
+```sh
+docker-compose up
+```
+
+- Open [http://localhost:4466](http://localhost:4466) to view it in the browser.
