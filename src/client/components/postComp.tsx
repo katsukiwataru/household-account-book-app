@@ -7,7 +7,7 @@ type Props = {
 const Home: React.FC<Props> = ({ fetchData }) => {
   return (
     <div>
-      <button onClick={fetchData}>fetchData</button>
+      <button onClick={fetchData}>create product</button>
     </div>
   );
 };

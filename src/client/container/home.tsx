@@ -3,15 +3,6 @@ import HomeComp from '../components/homeComp';
 
 const Home: React.FC = () => {
   const [products, setProducts] = useState<Products[]>([]);
-  // const query = `mutation {
-  //   createProduct(data: {
-  //     name: "${name}",
-  //     price: 30000
-  //   }) {
-  //     id
-  //     name
-  //   }
-  // }`;
 
   const query = `{
     products{
