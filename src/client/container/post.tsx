@@ -4,6 +4,7 @@ import PostComp from '../components/postComp';
 const Home: React.FC = () => {
   const [name, setName] = useState<string | null>(null);
   const [price, setPrice] = useState<number | null>(null);
+  const queryArgs = ['name', 'price'];
 
   const query = `mutation {
     createProduct(data: {
@@ -36,24 +37,21 @@ const Home: React.FC = () => {
     }
   };
 
-  const setInputName = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const postName = event.target as HTMLButtonElement;
-    setName(postName.value);
-  };
-
-  const sendInputName = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      fetchData();
+  const setInputNamePrice = (event: React.ChangeEvent<HTMLInputElement>, queryArg: string) => {
+    const eventTarget = event.target as HTMLButtonElement;
+    if (!eventTarget.value) {
+      setPrice(null);
+    }
+    if (queryArg === 'name') {
+      setName(eventTarget.value);
+    }
+    if (queryArg === 'price') {
+      const priceNumber = parseInt(eventTarget.value, 10);
+      setPrice(priceNumber);
     }
   };
 
-  const setInputPrice = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const postName = event.target as HTMLButtonElement;
-    const priceNumber = Number(postName.value);
-    setPrice(priceNumber);
-  };
-
-  const sendInputPrice = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const sendInputNamePrice = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       fetchData();
     }
@@ -61,13 +59,22 @@ const Home: React.FC = () => {
 
   return (
     <div>
-      <PostComp
-        fetchData={fetchData}
-        setInputName={setInputName}
-        sendInputName={sendInputName}
-        setInputPrice={setInputPrice}
-        sendInputPrice={sendInputPrice}
-      />
+      <PostComp fetchData={fetchData} />
+      {queryArgs.map((queryArg) => {
+        return (
+          <React.Fragment key={queryArg}>
+            <div>
+              <p>{queryArg}</p>
+              <input
+                type="text"
+                placeholder={queryArg}
+                onChange={(event) => setInputNamePrice(event, queryArg)}
+                onKeyPress={(event) => sendInputNamePrice(event)}
+              />
+            </div>
+          </React.Fragment>
+        );
+      })}
     </div>
   );
 };
