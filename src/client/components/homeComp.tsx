@@ -2,11 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-type Props = {
-  products: Products[];
-};
+type Props = {};
 
-const Home: React.FC<Props> = ({ products }) => {
+const Home: React.FC<Props> = () => {
   return (
     <div>
       <ProductTop>
@@ -20,22 +18,6 @@ const Home: React.FC<Props> = ({ products }) => {
         <Price>値段</Price>
         <Id>編集</Id>
       </Product>
-      <div>
-        {products.map((product) => {
-          return (
-            <React.Fragment key={product.id}>
-              <Product>
-                <Name>{product.name}</Name>
-                <Price>{product.price}円</Price>
-                <Id>
-                  <Link to={`/post/${product.id}`}>編集</Link>
-                  <span>削除</span>
-                </Id>
-              </Product>
-            </React.Fragment>
-          );
-        })}
-      </div>
     </div>
   );
 };
