@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PostComp from '../components/postComp';
+import history from '../plugins/history';
 import styled from 'styled-components';
 
 const Home: React.FC = () => {
@@ -33,6 +34,7 @@ const Home: React.FC = () => {
       });
       const jsonData = await data.json();
       console.log(jsonData);
+      history.push('/');
     } catch (error) {
       console.log(error);
     }

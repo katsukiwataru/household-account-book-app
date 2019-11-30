@@ -77,7 +77,7 @@ const PostDesc: React.FC<Props> = ({ match }) => {
             </React.Fragment>
           );
         })}
-        <SubmitButton onClick={updateData}>登録する</SubmitButton>
+        <SubmitButton onClick={updateData}>更新する</SubmitButton>
       </FormArea>
     </>
   );
