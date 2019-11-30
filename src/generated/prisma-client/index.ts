@@ -2,11 +2,16 @@
 // Please don't change this file manually but run `prisma generate` to update it.
 // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-import { DocumentNode } from 'graphql';
-import { makePrismaClientClass, BaseClientOptions, Model } from 'prisma-client-lib';
-import { typeDefs } from './prisma-schema';
+import { DocumentNode } from "graphql";
+import {
+  makePrismaClientClass,
+  BaseClientOptions,
+  Model
+} from "prisma-client-lib";
+import { typeDefs } from "./prisma-schema";
 
-export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> & U[keyof U];
+export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
+  U[keyof U];
 
 export type Maybe<T> = T | undefined | null;
 
@@ -25,7 +30,10 @@ export interface Fragmentable {
 
 export interface Prisma {
   $exists: Exists;
-  $graphql: <T = any>(query: string, variables?: { [key: string]: any }) => Promise<T>;
+  $graphql: <T = any>(
+    query: string,
+    variables?: { [key: string]: any }
+  ) => Promise<T>;
 
   /**
    * Queries
@@ -76,7 +84,10 @@ export interface Prisma {
    */
 
   createProduct: (data: ProductCreateInput) => ProductPromise;
-  updateProduct: (args: { data: ProductUpdateInput; where: ProductWhereUniqueInput }) => ProductPromise;
+  updateProduct: (args: {
+    data: ProductUpdateInput;
+    where: ProductWhereUniqueInput;
+  }) => ProductPromise;
   updateManyProducts: (args: {
     data: ProductUpdateManyMutationInput;
     where?: ProductWhereInput;
@@ -89,9 +100,19 @@ export interface Prisma {
   deleteProduct: (where: ProductWhereUniqueInput) => ProductPromise;
   deleteManyProducts: (where?: ProductWhereInput) => BatchPayloadPromise;
   createUser: (data: UserCreateInput) => UserPromise;
-  updateUser: (args: { data: UserUpdateInput; where: UserWhereUniqueInput }) => UserPromise;
-  updateManyUsers: (args: { data: UserUpdateManyMutationInput; where?: UserWhereInput }) => BatchPayloadPromise;
-  upsertUser: (args: { where: UserWhereUniqueInput; create: UserCreateInput; update: UserUpdateInput }) => UserPromise;
+  updateUser: (args: {
+    data: UserUpdateInput;
+    where: UserWhereUniqueInput;
+  }) => UserPromise;
+  updateManyUsers: (args: {
+    data: UserUpdateManyMutationInput;
+    where?: UserWhereInput;
+  }) => BatchPayloadPromise;
+  upsertUser: (args: {
+    where: UserWhereUniqueInput;
+    create: UserCreateInput;
+    update: UserUpdateInput;
+  }) => UserPromise;
   deleteUser: (where: UserWhereUniqueInput) => UserPromise;
   deleteManyUsers: (where?: UserWhereInput) => BatchPayloadPromise;
 
@@ -103,8 +124,12 @@ export interface Prisma {
 }
 
 export interface Subscription {
-  product: (where?: ProductSubscriptionWhereInput) => ProductSubscriptionPayloadSubscription;
-  user: (where?: UserSubscriptionWhereInput) => UserSubscriptionPayloadSubscription;
+  product: (
+    where?: ProductSubscriptionWhereInput
+  ) => ProductSubscriptionPayloadSubscription;
+  user: (
+    where?: UserSubscriptionWhereInput
+  ) => UserSubscriptionPayloadSubscription;
 }
 
 export interface ClientConstructor<T> {
@@ -115,11 +140,17 @@ export interface ClientConstructor<T> {
  * Types
  */
 
-export type ProductOrderByInput = 'id_ASC' | 'id_DESC' | 'name_ASC' | 'name_DESC' | 'price_ASC' | 'price_DESC';
+export type ProductOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "name_ASC"
+  | "name_DESC"
+  | "price_ASC"
+  | "price_DESC";
 
-export type UserOrderByInput = 'id_ASC' | 'id_DESC' | 'name_ASC' | 'name_DESC';
+export type UserOrderByInput = "id_ASC" | "id_DESC" | "name_ASC" | "name_DESC";
 
-export type MutationType = 'CREATED' | 'UPDATED' | 'DELETED';
+export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
 export interface ProductUpdateInput {
   name?: Maybe<String>;
@@ -207,14 +238,23 @@ export interface ProductSubscriptionWhereInput {
 
 export interface ProductUpdateManyInput {
   create?: Maybe<ProductCreateInput[] | ProductCreateInput>;
-  update?: Maybe<ProductUpdateWithWhereUniqueNestedInput[] | ProductUpdateWithWhereUniqueNestedInput>;
-  upsert?: Maybe<ProductUpsertWithWhereUniqueNestedInput[] | ProductUpsertWithWhereUniqueNestedInput>;
+  update?: Maybe<
+    | ProductUpdateWithWhereUniqueNestedInput[]
+    | ProductUpdateWithWhereUniqueNestedInput
+  >;
+  upsert?: Maybe<
+    | ProductUpsertWithWhereUniqueNestedInput[]
+    | ProductUpsertWithWhereUniqueNestedInput
+  >;
   delete?: Maybe<ProductWhereUniqueInput[] | ProductWhereUniqueInput>;
   connect?: Maybe<ProductWhereUniqueInput[] | ProductWhereUniqueInput>;
   set?: Maybe<ProductWhereUniqueInput[] | ProductWhereUniqueInput>;
   disconnect?: Maybe<ProductWhereUniqueInput[] | ProductWhereUniqueInput>;
   deleteMany?: Maybe<ProductScalarWhereInput[] | ProductScalarWhereInput>;
-  updateMany?: Maybe<ProductUpdateManyWithWhereNestedInput[] | ProductUpdateManyWithWhereNestedInput>;
+  updateMany?: Maybe<
+    | ProductUpdateManyWithWhereNestedInput[]
+    | ProductUpdateManyWithWhereNestedInput
+  >;
 }
 
 export interface ProductUpdateManyDataInput {
@@ -355,12 +395,16 @@ export interface UserPreviousValues {
   name: String;
 }
 
-export interface UserPreviousValuesPromise extends Promise<UserPreviousValues>, Fragmentable {
+export interface UserPreviousValuesPromise
+  extends Promise<UserPreviousValues>,
+    Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
 }
 
-export interface UserPreviousValuesSubscription extends Promise<AsyncIterator<UserPreviousValues>>, Fragmentable {
+export interface UserPreviousValuesSubscription
+  extends Promise<AsyncIterator<UserPreviousValues>>,
+    Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
 }
@@ -384,7 +428,9 @@ export interface UserPromise extends Promise<User>, Fragmentable {
   }) => T;
 }
 
-export interface UserSubscription extends Promise<AsyncIterator<User>>, Fragmentable {
+export interface UserSubscription
+  extends Promise<AsyncIterator<User>>,
+    Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
   products: <T = Promise<AsyncIterator<ProductSubscription>>>(args?: {
@@ -398,7 +444,9 @@ export interface UserSubscription extends Promise<AsyncIterator<User>>, Fragment
   }) => T;
 }
 
-export interface UserNullablePromise extends Promise<User | null>, Fragmentable {
+export interface UserNullablePromise
+  extends Promise<User | null>,
+    Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
   products: <T = FragmentableArray<Product>>(args?: {
@@ -419,7 +467,9 @@ export interface ProductSubscriptionPayload {
   previousValues: ProductPreviousValues;
 }
 
-export interface ProductSubscriptionPayloadPromise extends Promise<ProductSubscriptionPayload>, Fragmentable {
+export interface ProductSubscriptionPayloadPromise
+  extends Promise<ProductSubscriptionPayload>,
+    Fragmentable {
   mutation: () => Promise<MutationType>;
   node: <T = ProductPromise>() => T;
   updatedFields: () => Promise<String[]>;
@@ -439,11 +489,15 @@ export interface AggregateProduct {
   count: Int;
 }
 
-export interface AggregateProductPromise extends Promise<AggregateProduct>, Fragmentable {
+export interface AggregateProductPromise
+  extends Promise<AggregateProduct>,
+    Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateProductSubscription extends Promise<AsyncIterator<AggregateProduct>>, Fragmentable {
+export interface AggregateProductSubscription
+  extends Promise<AsyncIterator<AggregateProduct>>,
+    Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
 
@@ -457,7 +511,9 @@ export interface ProductEdgePromise extends Promise<ProductEdge>, Fragmentable {
   cursor: () => Promise<String>;
 }
 
-export interface ProductEdgeSubscription extends Promise<AsyncIterator<ProductEdge>>, Fragmentable {
+export interface ProductEdgeSubscription
+  extends Promise<AsyncIterator<ProductEdge>>,
+    Fragmentable {
   node: <T = ProductSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
 }
@@ -466,11 +522,15 @@ export interface AggregateUser {
   count: Int;
 }
 
-export interface AggregateUserPromise extends Promise<AggregateUser>, Fragmentable {
+export interface AggregateUserPromise
+  extends Promise<AggregateUser>,
+    Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateUserSubscription extends Promise<AsyncIterator<AggregateUser>>, Fragmentable {
+export interface AggregateUserSubscription
+  extends Promise<AsyncIterator<AggregateUser>>,
+    Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
 
@@ -486,13 +546,17 @@ export interface ProductPromise extends Promise<Product>, Fragmentable {
   price: () => Promise<Int>;
 }
 
-export interface ProductSubscription extends Promise<AsyncIterator<Product>>, Fragmentable {
+export interface ProductSubscription
+  extends Promise<AsyncIterator<Product>>,
+    Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
   price: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface ProductNullablePromise extends Promise<Product | null>, Fragmentable {
+export interface ProductNullablePromise
+  extends Promise<Product | null>,
+    Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
   price: () => Promise<Int>;
@@ -512,7 +576,9 @@ export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
   endCursor: () => Promise<String>;
 }
 
-export interface PageInfoSubscription extends Promise<AsyncIterator<PageInfo>>, Fragmentable {
+export interface PageInfoSubscription
+  extends Promise<AsyncIterator<PageInfo>>,
+    Fragmentable {
   hasNextPage: () => Promise<AsyncIterator<Boolean>>;
   hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
   startCursor: () => Promise<AsyncIterator<String>>;
@@ -525,13 +591,17 @@ export interface ProductPreviousValues {
   price: Int;
 }
 
-export interface ProductPreviousValuesPromise extends Promise<ProductPreviousValues>, Fragmentable {
+export interface ProductPreviousValuesPromise
+  extends Promise<ProductPreviousValues>,
+    Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
   price: () => Promise<Int>;
 }
 
-export interface ProductPreviousValuesSubscription extends Promise<AsyncIterator<ProductPreviousValues>>, Fragmentable {
+export interface ProductPreviousValuesSubscription
+  extends Promise<AsyncIterator<ProductPreviousValues>>,
+    Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
   price: () => Promise<AsyncIterator<Int>>;
@@ -541,11 +611,15 @@ export interface BatchPayload {
   count: Long;
 }
 
-export interface BatchPayloadPromise extends Promise<BatchPayload>, Fragmentable {
+export interface BatchPayloadPromise
+  extends Promise<BatchPayload>,
+    Fragmentable {
   count: () => Promise<Long>;
 }
 
-export interface BatchPayloadSubscription extends Promise<AsyncIterator<BatchPayload>>, Fragmentable {
+export interface BatchPayloadSubscription
+  extends Promise<AsyncIterator<BatchPayload>>,
+    Fragmentable {
   count: () => Promise<AsyncIterator<Long>>;
 }
 
@@ -559,7 +633,9 @@ export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
   cursor: () => Promise<String>;
 }
 
-export interface UserEdgeSubscription extends Promise<AsyncIterator<UserEdge>>, Fragmentable {
+export interface UserEdgeSubscription
+  extends Promise<AsyncIterator<UserEdge>>,
+    Fragmentable {
   node: <T = UserSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
 }
@@ -571,7 +647,9 @@ export interface UserSubscriptionPayload {
   previousValues: UserPreviousValues;
 }
 
-export interface UserSubscriptionPayloadPromise extends Promise<UserSubscriptionPayload>, Fragmentable {
+export interface UserSubscriptionPayloadPromise
+  extends Promise<UserSubscriptionPayload>,
+    Fragmentable {
   mutation: () => Promise<MutationType>;
   node: <T = UserPromise>() => T;
   updatedFields: () => Promise<String[]>;
@@ -592,13 +670,17 @@ export interface ProductConnection {
   edges: ProductEdge[];
 }
 
-export interface ProductConnectionPromise extends Promise<ProductConnection>, Fragmentable {
+export interface ProductConnectionPromise
+  extends Promise<ProductConnection>,
+    Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
   edges: <T = FragmentableArray<ProductEdge>>() => T;
   aggregate: <T = AggregateProductPromise>() => T;
 }
 
-export interface ProductConnectionSubscription extends Promise<AsyncIterator<ProductConnection>>, Fragmentable {
+export interface ProductConnectionSubscription
+  extends Promise<AsyncIterator<ProductConnection>>,
+    Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
   edges: <T = Promise<AsyncIterator<ProductEdgeSubscription>>>() => T;
   aggregate: <T = AggregateProductSubscription>() => T;
@@ -609,13 +691,17 @@ export interface UserConnection {
   edges: UserEdge[];
 }
 
-export interface UserConnectionPromise extends Promise<UserConnection>, Fragmentable {
+export interface UserConnectionPromise
+  extends Promise<UserConnection>,
+    Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
   edges: <T = FragmentableArray<UserEdge>>() => T;
   aggregate: <T = AggregateUserPromise>() => T;
 }
 
-export interface UserConnectionSubscription extends Promise<AsyncIterator<UserConnection>>, Fragmentable {
+export interface UserConnectionSubscription
+  extends Promise<AsyncIterator<UserConnection>>,
+    Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
   edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
   aggregate: <T = AggregateUserSubscription>() => T;
@@ -650,13 +736,13 @@ export type Boolean = boolean;
 
 export const models: Model[] = [
   {
-    name: 'Product',
-    embedded: false,
+    name: "Product",
+    embedded: false
   },
   {
-    name: 'User',
-    embedded: false,
-  },
+    name: "User",
+    embedded: false
+  }
 ];
 
 /**
@@ -666,6 +752,6 @@ export const models: Model[] = [
 export const Prisma = makePrismaClientClass<ClientConstructor<Prisma>>({
   typeDefs,
   models,
-  endpoint: `http://localhost:4466`,
+  endpoint: `http://localhost:4466`
 });
 export const prisma = new Prisma();
