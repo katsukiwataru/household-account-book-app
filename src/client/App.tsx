@@ -12,7 +12,7 @@ const App: React.FC = () => {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/post" component={Post} />
-          <Route exact path="/post/:id" component={PostDesc} />
+          <Route exact path="/post/:postId" component={PostDesc} />
         </Switch>
       </Router>
     </>

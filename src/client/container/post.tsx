@@ -52,12 +52,6 @@ const Home: React.FC = () => {
     }
   };
 
-  // const sendInputNamePrice = (event: React.KeyboardEvent<HTMLInputElement>) => {
-  //   if (event.key === 'Enter') {
-  //     fetchData();
-  //   }
-  // };
-
   return (
     <div>
       <PostComp />
@@ -67,12 +61,7 @@ const Home: React.FC = () => {
             <React.Fragment key={index}>
               <ProductBox>
                 <p>{queryArg}</p>
-                <input
-                  type="text"
-                  placeholder={queryArg}
-                  onChange={(event) => setInputNamePrice(event, queryArg)}
-                  // onKeyPress={(event) => sendInputNamePrice(event)}
-                />
+                <input type="text" placeholder={queryArg} onChange={(event) => setInputNamePrice(event, queryArg)} />
               </ProductBox>
             </React.Fragment>
           );
