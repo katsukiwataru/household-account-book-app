@@ -29,6 +29,7 @@ const Home: React.FC<Props> = ({ products }) => {
                 <Price>{product.price}円</Price>
                 <Id>
                   <Link to={`/post/${product.id}`}>編集</Link>
+                  <span>削除</span>
                 </Id>
               </Product>
             </React.Fragment>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { match } from 'react-router-dom';
 import history from '../plugins/history';
 import styled from 'styled-components';
+import PostDescComp from '../components/postDescComp';
 
 type Props = {
   match: match<{
@@ -61,11 +62,10 @@ const PostDesc: React.FC<Props> = ({ match }) => {
       setPrice(priceNumber);
     }
   };
+
   return (
     <>
-      <ProductTop>
-        <h1>購入した商品の編集</h1>
-      </ProductTop>
+      <PostDescComp />
       <FormArea>
         {queryArgs.map((queryArg, index) => {
           return (
@@ -82,14 +82,6 @@ const PostDesc: React.FC<Props> = ({ match }) => {
     </>
   );
 };
-
-const ProductTop = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 50%;
-  margin: 10px auto;
-  align-items: center;
-`;
 
 const FormArea = styled.div`
   width: 40%;
