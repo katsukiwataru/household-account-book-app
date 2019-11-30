@@ -9,12 +9,12 @@ type Props = {
 const Home: React.FC<Props> = ({ products }) => {
   return (
     <div>
-      <PostProduct>
-        <h1>商品一覧</h1>
+      <ProductTop>
+        <h1>購入した商品一覧</h1>
         <p>
-          <Link to={`/post/`}>商品を追加する</Link>
+          <Link to={`/post/`}>購入した商品の追加</Link>
         </p>
-      </PostProduct>
+      </ProductTop>
       <Product>
         <Name>商品名</Name>
         <Price>値段</Price>
@@ -39,10 +39,10 @@ const Home: React.FC<Props> = ({ products }) => {
   );
 };
 
-const PostProduct = styled.div`
+const ProductTop = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 40%;
+  width: 50%;
   margin: 10px auto;
   align-items: center;
 `;

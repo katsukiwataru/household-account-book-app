@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import PostComp from '../components/postComp';
+import styled from 'styled-components';
 
 const Home: React.FC = () => {
   const [name, setName] = useState<string | null>(null);
   const [price, setPrice] = useState<number | null>(null);
-  const queryArgs = ['name', 'price'];
+  const queryArgs = ['商品名', '値段'];
 
   const query = `mutation {
     createProduct(data: {
@@ -42,41 +43,58 @@ const Home: React.FC = () => {
     if (!eventTarget.value) {
       setPrice(null);
     }
-    if (queryArg === 'name') {
+    if (queryArg === '商品名') {
       setName(eventTarget.value);
     }
-    if (queryArg === 'price') {
+    if (queryArg === '値段') {
       const priceNumber = parseInt(eventTarget.value, 10);
       setPrice(priceNumber);
     }
   };
 
-  const sendInputNamePrice = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      fetchData();
-    }
-  };
+  // const sendInputNamePrice = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  //   if (event.key === 'Enter') {
+  //     fetchData();
+  //   }
+  // };
 
   return (
     <div>
-      <PostComp fetchData={fetchData} />
-      {queryArgs.map((queryArg) => {
-        return (
-          <React.Fragment key={queryArg}>
-            <div>
-              <p>{queryArg}</p>
-              <input
-                type="text"
-                placeholder={queryArg}
-                onChange={(event) => setInputNamePrice(event, queryArg)}
-                onKeyPress={(event) => sendInputNamePrice(event)}
-              />
-            </div>
-          </React.Fragment>
-        );
-      })}
+      <PostComp />
+      <FormArea>
+        {queryArgs.map((queryArg, index) => {
+          return (
+            <React.Fragment key={index}>
+              <ProductBox>
+                <p>{queryArg}</p>
+                <input
+                  type="text"
+                  placeholder={queryArg}
+                  onChange={(event) => setInputNamePrice(event, queryArg)}
+                  // onKeyPress={(event) => sendInputNamePrice(event)}
+                />
+              </ProductBox>
+            </React.Fragment>
+          );
+        })}
+        <SubmitButton onClick={fetchData}>登録する</SubmitButton>
+      </FormArea>
     </div>
   );
 };
+
+const FormArea = styled.div`
+  width: 40%;
+  margin: 0 auto;
+`;
+
+const ProductBox = styled.div`
+  margin: 10px 0;
+  align-items: center;
+`;
+
+const SubmitButton = styled.button`
+  margin: 50px 0;
+`;
 
 export default Home;
