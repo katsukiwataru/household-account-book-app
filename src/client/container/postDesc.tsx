@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { match } from 'react-router-dom';
+import history from '../plugins/history';
 import styled from 'styled-components';
 
 type Props = {
@@ -41,6 +42,7 @@ const PostDesc: React.FC<Props> = ({ match }) => {
       });
       const jsonData = await data.json();
       console.log(jsonData);
+      history.push('/');
     } catch (error) {
       console.log(error);
     }
