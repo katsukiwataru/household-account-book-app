@@ -27,10 +27,6 @@ npm build
 database setup
 
 ```sh
-cd src/database/
-```
-
-```sh
 docker-compose up
 ```
 
