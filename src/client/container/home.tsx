@@ -5,6 +5,7 @@ import HomeComp from '../components/homeComp';
 
 const Home: React.FC = () => {
   const [products, setProducts] = useState<Products[]>([]);
+  const [error, setError] = useState<boolean>(false);
 
   const fetchData = async () => {
     const query = `{
@@ -28,8 +29,8 @@ const Home: React.FC = () => {
       });
       const jsonData = await data.json();
       setProducts(jsonData.data.products);
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      setError(true);
     }
   };
 
@@ -56,8 +57,8 @@ const Home: React.FC = () => {
         mode: 'cors',
       });
       fetchData();
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      setError(true);
     }
   };
 
@@ -68,6 +69,7 @@ const Home: React.FC = () => {
   return (
     <div>
       <HomeComp />
+      {error && <Error>ネットワークエラーです。情報を取得できませんでした。</Error>}
       {products.map((product) => {
         return (
           <React.Fragment key={product.id}>
@@ -76,7 +78,7 @@ const Home: React.FC = () => {
               <Price>{product.price}円</Price>
               <Id>
                 <Link to={`/post/${product.id}`}>編集</Link>
-                <span onClick={() => removeData(product.id)}>削除</span>
+                <Remove onClick={() => removeData(product.id)}>削除</Remove>
               </Id>
             </Product>
           </React.Fragment>
@@ -85,6 +87,12 @@ const Home: React.FC = () => {
     </div>
   );
 };
+
+const Error = styled.div`
+  font-size: 22px;
+  color: red;
+  text-align: center;
+`;
 
 const Product = styled.div`
   display: flex;
@@ -106,6 +114,10 @@ const Price = styled.p`
 
 const Id = styled.p`
   width: 100%;
+`;
+
+const Remove = styled.span`
+  margin: 0 10px;
 `;
 
 export default Home;

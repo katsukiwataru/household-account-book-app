@@ -14,6 +14,8 @@ const PostDesc: React.FC<Props> = ({ match }) => {
   const postId = match.params.postId || '';
   const [name, setName] = useState<string | null>(null);
   const [price, setPrice] = useState<number | null>(null);
+  const [inputError, setInputError] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
   const queryArgs = ['商品名', '値段'];
 
   const query = `mutation {
@@ -42,10 +44,14 @@ const PostDesc: React.FC<Props> = ({ match }) => {
         mode: 'cors',
       });
       const jsonData = await data.json();
-      console.log(jsonData);
-      history.push('/');
-    } catch (error) {
-      console.log(error);
+      if (jsonData.errors) {
+        setInputError(true);
+      }
+      if (!jsonData.errors) {
+        history.push('/');
+      }
+    } catch (err) {
+      setError(true);
     }
   };
 
@@ -66,6 +72,8 @@ const PostDesc: React.FC<Props> = ({ match }) => {
   return (
     <>
       <PostDescComp />
+      {inputError && <Error>商品名と値段を入力してください。</Error>}
+      {error && <Error>ネットワークエラーです。</Error>}
       <FormArea>
         {queryArgs.map((queryArg, index) => {
           return (
@@ -82,6 +90,12 @@ const PostDesc: React.FC<Props> = ({ match }) => {
     </>
   );
 };
+
+const Error = styled.div`
+  font-size: 22px;
+  color: red;
+  text-align: center;
+`;
 
 const FormArea = styled.div`
   width: 40%;
