@@ -2,10 +2,48 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import HomeComp from '../components/homeComp';
+import { useQuery } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
+
+const GET_PRODUCTS = gql`
+  {
+    products {
+      id
+      name
+      price
+    }
+  }
+`;
 
 const Home: React.FC = () => {
+  const { data, loading, error } = useQuery(GET_PRODUCTS);
   const [products, setProducts] = useState<Products[]>([]);
-  const [error, setError] = useState<boolean>(false);
+  const [erro, setError] = useState<boolean>(false);
+  // if (data) {
+  // }
+  console.log(error, loading);
+  // const hoge: Products[] = data.products as Products[];
+  // console.log(hoge);
+
+  // try {
+  //   const client = new ApolloClient({
+  //     uri: 'http://localhost:4466/',
+  //   });
+  //   const result = client.query({
+  //     query: gql`
+  //       {
+  //         products {
+  //           id
+  //           name
+  //           price
+  //         }
+  //       }
+  //     `,
+  //   });
+  //   console.log(result);
+  // } catch (err) {
+  //   console.log(err);
+  // }
 
   const fetchData = async () => {
     const query = `{
@@ -69,7 +107,24 @@ const Home: React.FC = () => {
   return (
     <div>
       <HomeComp />
-      {error && <Error>ネットワークエラーです。情報を取得できませんでした。</Error>}
+      {erro && <Error>ネットワークエラーです。情報を取得できませんでした。</Error>}
+      {data &&
+        data.products.map(
+          (product: { id: string | number | undefined; name: React.ReactNode; price: React.ReactNode }) => {
+            return (
+              <React.Fragment key={product.id}>
+                <Product>
+                  <Name>{product.name}</Name>
+                  <Price>{product.price}円</Price>
+                  <Id>
+                    <Link to={`/post/${product.id}`}>編集</Link>
+                    {/* <Remove onClick={() => removeData(product.id)}>削除</Remove> */}
+                  </Id>
+                </Product>
+              </React.Fragment>
+            );
+          },
+        )}
       {products.map((product) => {
         return (
           <React.Fragment key={product.id}>
