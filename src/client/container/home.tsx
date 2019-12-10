@@ -26,24 +26,20 @@ const DELETE_PRODUCTS = gql`
 `;
 
 const Home: React.FC = () => {
-  const { data: queryData, loading, error: queryError } = useQuery<{ products: Products[] }>(GET_PRODUCTS);
+  const { data: queryData, loading, error: queryError, refetch } = useQuery<{ products: Products[] }>(GET_PRODUCTS);
   const [deleteProduct, { error: mutationError }] = useMutation<{ products: Products[] }>(DELETE_PRODUCTS, {
     variables: { id: DELETE_PRODUCTS },
   });
 
-  const removeData = (productId: string) => {
-    deleteProduct({ variables: { id: productId } });
+  const removeData = async (productId: string) => {
+    await deleteProduct({ variables: { id: productId } });
+    await refetch();
   };
-
-  if (queryError || loading) {
-    return <p>{queryError ? `Error! ${queryError.message}` : 'loading...'}</p>;
-  }
-
-  // useEffect(() => {}, []);
 
   return (
     <div>
       <HomeComp />
+      {loading && <Loading>loading</Loading>}
       {queryError && <Error>ネットワークエラーです。情報を取得できませんでした。</Error>}
       {mutationError && <Error>ネットワークエラーです。情報を取得できませんでした。</Error>}
       {queryData &&
@@ -66,6 +62,12 @@ const Home: React.FC = () => {
     </div>
   );
 };
+
+const Loading = styled.div`
+  font-size: 22px;
+  color: green;
+  text-align: center;
+`;
 
 const Error = styled.div`
   font-size: 22px;
