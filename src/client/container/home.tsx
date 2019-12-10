@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import HomeComp from '../components/homeComp';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery, useMutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
 const GET_PRODUCTS = gql`
@@ -15,101 +15,39 @@ const GET_PRODUCTS = gql`
   }
 `;
 
+const DELETE_PRODUCTS = gql`
+  mutation deleteProduct($id: ID!) {
+    deleteProduct(where: { id: $id }) {
+      id
+      name
+      price
+    }
+  }
+`;
+
 const Home: React.FC = () => {
-  const { data, loading, error } = useQuery(GET_PRODUCTS);
-  const [products, setProducts] = useState<Products[]>([]);
-  const [erro, setError] = useState<boolean>(false);
-  // if (data) {
-  // }
-  console.log(error, loading);
-  // const hoge: Products[] = data.products as Products[];
-  // console.log(hoge);
+  const { data: queryData, loading, error: queryError } = useQuery<{ products: Products[] }>(GET_PRODUCTS);
+  const [deleteProduct, { error: mutationError }] = useMutation<{ products: Products[] }>(DELETE_PRODUCTS, {
+    variables: { id: DELETE_PRODUCTS },
+  });
 
-  // try {
-  //   const client = new ApolloClient({
-  //     uri: 'http://localhost:4466/',
-  //   });
-  //   const result = client.query({
-  //     query: gql`
-  //       {
-  //         products {
-  //           id
-  //           name
-  //           price
-  //         }
-  //       }
-  //     `,
-  //   });
-  //   console.log(result);
-  // } catch (err) {
-  //   console.log(err);
-  // }
-
-  const fetchData = async () => {
-    const query = `{
-      products{
-        id
-        name
-        price
-      }
-    }`;
-    try {
-      const data = await fetch('http://localhost:4466/', {
-        credentials: 'omit',
-        headers: {
-          'content-type': 'application/json',
-        },
-        body: JSON.stringify({
-          query,
-        }),
-        method: 'POST',
-        mode: 'cors',
-      });
-      const jsonData = await data.json();
-      setProducts(jsonData.data.products);
-    } catch (err) {
-      setError(true);
-    }
+  const removeData = (productId: string) => {
+    deleteProduct({ variables: { id: productId } });
   };
 
-  const removeData = async (id: string) => {
-    const query = `mutation {
-      deleteProduct(where: {
-        id: "${id}"
-      }){
-        id
-        name
-        price
-      }
-    }`;
-    try {
-      await fetch('http://localhost:4466/', {
-        credentials: 'omit',
-        headers: {
-          'content-type': 'application/json',
-        },
-        body: JSON.stringify({
-          query,
-        }),
-        method: 'POST',
-        mode: 'cors',
-      });
-      fetchData();
-    } catch (err) {
-      setError(true);
-    }
-  };
+  if (queryError || loading) {
+    return <p>{queryError ? `Error! ${queryError.message}` : 'loading...'}</p>;
+  }
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  // useEffect(() => {}, []);
 
   return (
     <div>
       <HomeComp />
-      {erro && <Error>ネットワークエラーです。情報を取得できませんでした。</Error>}
-      {data &&
-        data.products.map(
+      {queryError && <Error>ネットワークエラーです。情報を取得できませんでした。</Error>}
+      {mutationError && <Error>ネットワークエラーです。情報を取得できませんでした。</Error>}
+      {queryData &&
+        queryData.products.map(
           (product: { id: string | number | undefined; name: React.ReactNode; price: React.ReactNode }) => {
             return (
               <React.Fragment key={product.id}>
@@ -118,27 +56,13 @@ const Home: React.FC = () => {
                   <Price>{product.price}円</Price>
                   <Id>
                     <Link to={`/post/${product.id}`}>編集</Link>
-                    {/* <Remove onClick={() => removeData(product.id)}>削除</Remove> */}
+                    <Remove onClick={() => removeData(product.id as string)}>削除</Remove>
                   </Id>
                 </Product>
               </React.Fragment>
             );
           },
         )}
-      {products.map((product) => {
-        return (
-          <React.Fragment key={product.id}>
-            <Product>
-              <Name>{product.name}</Name>
-              <Price>{product.price}円</Price>
-              <Id>
-                <Link to={`/post/${product.id}`}>編集</Link>
-                <Remove onClick={() => removeData(product.id)}>削除</Remove>
-              </Id>
-            </Product>
-          </React.Fragment>
-        );
-      })}
     </div>
   );
 };
