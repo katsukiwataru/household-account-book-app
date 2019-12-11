@@ -2,48 +2,30 @@ import React, { useState } from 'react';
 import PostComp from '../components/postComp';
 import history from '../plugins/history';
 import styled from 'styled-components';
+import { useMutation } from 'react-apollo';
+import gql from 'graphql-tag';
 
-const Home: React.FC = () => {
-  const [name, setName] = useState<string | null>(null);
-  const [price, setPrice] = useState<number | null>(null);
-  const [inputError, setInputError] = useState<boolean>(false);
-  const [error, setError] = useState<boolean>(false);
-  const queryArgs = ['商品名', '値段'];
-
-  const query = `mutation {
-    createProduct(data: {
-      name: "${name}",
-      price: ${price}
-    }) {
+const CREATE_PRODUCTS = gql`
+  mutation createProduct($name: String!, $price: Int!) {
+    createProduct(data: { name: $name, price: $price }) {
       id
       name
       price
     }
-  }`;
+  }
+`;
 
-  const fetchData = async () => {
-    try {
-      const data = await fetch('http://localhost:4466/', {
-        credentials: 'omit',
-        headers: {
-          'content-type': 'application/json',
-        },
-        body: JSON.stringify({
-          query,
-        }),
-        method: 'POST',
-        mode: 'cors',
-      });
-      const jsonData = await data.json();
-      if (jsonData.errors) {
-        setInputError(true);
-      }
-      if (!jsonData.errors) {
-        history.push('/');
-      }
-    } catch (err) {
-      setError(true);
-    }
+const Post: React.FC = () => {
+  const [createProduct, { error: mutationError }] = useMutation<{ products: Products[] }>(CREATE_PRODUCTS, {
+    variables: { id: CREATE_PRODUCTS },
+  });
+  const [name, setName] = useState<string | null>(null);
+  const [price, setPrice] = useState<number | null>(null);
+  const queryArgs = ['商品名', '値段'];
+
+  const createData = async (productName: string, productPrice: number) => {
+    await createProduct({ variables: { name: productName, price: productPrice } });
+    history.push('/');
   };
 
   const setInputNamePrice = (event: React.ChangeEvent<HTMLInputElement>, queryArg: string) => {
@@ -63,8 +45,7 @@ const Home: React.FC = () => {
   return (
     <div>
       <PostComp />
-      {inputError && <Error>商品名と値段を入力してください。</Error>}
-      {error && <Error>ネットワークエラーです。</Error>}
+      {mutationError && <Error>ネットワークエラーです。</Error>}
       <FormArea>
         {queryArgs.map((queryArg, index) => {
           return (
@@ -76,7 +57,7 @@ const Home: React.FC = () => {
             </React.Fragment>
           );
         })}
-        <SubmitButton onClick={fetchData}>登録する</SubmitButton>
+        <SubmitButton onClick={() => createData(name as string, price as number)}>登録する</SubmitButton>
       </FormArea>
     </div>
   );
@@ -102,4 +83,4 @@ const SubmitButton = styled.button`
   margin: 50px 0;
 `;
 
-export default Home;
+export default Post;

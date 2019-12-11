@@ -26,7 +26,9 @@ const DELETE_PRODUCTS = gql`
 `;
 
 const Home: React.FC = () => {
-  const { data: queryData, loading, error: queryError, refetch } = useQuery<{ products: Products[] }>(GET_PRODUCTS);
+  const { data: queryData, loading, error: queryError, refetch } = useQuery<{ products: Products[] }>(GET_PRODUCTS, {
+    fetchPolicy: 'network-only',
+  });
   const [deleteProduct, { error: mutationError }] = useMutation<{ products: Products[] }>(DELETE_PRODUCTS, {
     variables: { id: DELETE_PRODUCTS },
   });
