@@ -3,6 +3,8 @@ import { match } from 'react-router-dom';
 import history from '../plugins/history';
 import styled from 'styled-components';
 import PostDescComp from '../components/postDescComp';
+import { useMutation } from 'react-apollo';
+import gql from 'graphql-tag';
 
 type Props = {
   match: match<{
@@ -10,49 +12,25 @@ type Props = {
   }>;
 };
 
+const CREATE_PRODUCTS = gql`
+  mutation updateProduct($name: String!, $price: Int!, $id: ID) {
+    updateProduct(data: { name: $name, price: $price }, where: { id: $id }) {
+      id
+    }
+  }
+`;
+
 const PostDesc: React.FC<Props> = ({ match }) => {
   const postId = match.params.postId || '';
   const [name, setName] = useState<string | null>(null);
   const [price, setPrice] = useState<number | null>(null);
-  const [inputError, setInputError] = useState<boolean>(false);
-  const [error, setError] = useState<boolean>(false);
   const queryArgs = ['商品名', '値段'];
-
-  const query = `mutation {
-    updateProduct(data: {
-      name: "${name}"
-      price: ${price}
-    }, where: {
-      id: "${postId}"
-    }){
-      name
-      price
-    }
-  }`;
-
-  const updateData = async () => {
-    try {
-      const data = await fetch('http://localhost:4466/', {
-        credentials: 'omit',
-        headers: {
-          'content-type': 'application/json',
-        },
-        body: JSON.stringify({
-          query,
-        }),
-        method: 'POST',
-        mode: 'cors',
-      });
-      const jsonData = await data.json();
-      if (jsonData.errors) {
-        setInputError(true);
-      }
-      if (!jsonData.errors) {
-        history.push('/');
-      }
-    } catch (err) {
-      setError(true);
-    }
+  const [updateProduct, { error: mutationError }] = useMutation<{ products: Products[] }>(CREATE_PRODUCTS, {
+    variables: { id: CREATE_PRODUCTS },
+  });
+  const updateData = async (productName: string, productPrice: number, productId: number) => {
+    await updateProduct({ variables: { name: productName, price: productPrice, id: productId } });
+    history.push('/');
   };
 
   const setInputNamePrice = (event: React.ChangeEvent<HTMLInputElement>, queryArg: string) => {
@@ -72,8 +50,7 @@ const PostDesc: React.FC<Props> = ({ match }) => {
   return (
     <>
       <PostDescComp />
-      {inputError && <Error>商品名と値段を入力してください。</Error>}
-      {error && <Error>ネットワークエラーです。</Error>}
+      {mutationError && <Error>ネットワークエラーです。</Error>}
       <FormArea>
         {queryArgs.map((queryArg, index) => {
           return (
@@ -85,7 +62,7 @@ const PostDesc: React.FC<Props> = ({ match }) => {
             </React.Fragment>
           );
         })}
-        <SubmitButton onClick={updateData}>更新する</SubmitButton>
+        <SubmitButton onClick={() => updateData(name as string, price as number, postId as any)}>登録する</SubmitButton>
       </FormArea>
     </>
   );
