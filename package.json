@@ -19,7 +19,7 @@
   "homepage": "https://github.com/katsukiwataru/household-account-book-app#readme",
   "dependencies": {
     "@apollo/react-hooks": "^3.1.3",
-    "@types/history": "^4.7.3",
+    "@types/history": "^4.7.7",
     "@types/node": "^12.12.14",
     "@types/react-dom": "^16.9.4",
     "@types/styled-components": "^4.4.0",
